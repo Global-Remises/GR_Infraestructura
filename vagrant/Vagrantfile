@@ -52,6 +52,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.network "forwarded_port", guest: 8080, host: 38080
   config.vm.network "forwarded_port", guest: 5432, host: 35432
+  config.vm.network "forwarded_port", guest: 4848, host: 34848
  
   config.vm.provider 'virtualbox' do |vb|
     # show virtualbox gui when bootstraping vagrant box (useful for debugging)

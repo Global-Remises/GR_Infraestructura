@@ -1,6 +1,8 @@
 #!/bin/bash
 #name: create_core.sh
-sudo mkdir -p /opt/globalremises/core
-sudo chown -R ubuntu:ubuntu /opt/globalremises
+sudo rm -rf /opt/globalremises/core
+sudo mkdir -p /opt/globalremises
+sudo chown ubuntu:ubuntu /opt/globalremises
+mkdir -p /opt/globalremises/core
 cd /opt/globalremises/core
 git clone  git@github.com:globalremises/GRCore.git .
