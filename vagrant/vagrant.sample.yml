@@ -1,0 +1,14 @@
+---
+# Custom boxes
+box:
+ name: "GRDev"
+ url: "https://cloud-images.ubuntu.com//xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
+#ip: "192.168.0.10"
+disable:
+  - "1_install_java_1.7.9"
+  - "1_install_postgres_9.5"
+  - "2_install_payara_micro"
+
+git:
+    user.name: 'globalremises'
+    user.email: 'globalremises@gmail.com'
