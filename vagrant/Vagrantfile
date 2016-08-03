@@ -19,6 +19,17 @@ end
 
 require "#{root_dir}/scripts/Provisioner.rb"
 Vagrant.configure(2) do |config|
+  config.ssh.insert_key = false
+  config.ssh.private_key_path = ['~/.ssh/id_rsa', '~/.vagrant.d/insecure_private_key']
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/id_rsa.pub"
+  config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
+
+
+  config.ssh.forward_agent = true
+  #config.ssh.insert_key = false
+  #config.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', '~/.ssh/id_rsa']
+
   config.vm.box = settings['box']['name']
   config.vm.box_url = settings['box']['url']
 
@@ -30,12 +41,18 @@ Vagrant.configure(2) do |config|
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
   config.vm.synced_folder '.', '/vagrant', disabled: false
 
+  config.vm.hostname = 'globalremises'
+  config.ssh.username = "ubuntu"
+  #config.ssh.password = "ubuntu"
   #if settings.include? 'folders'
   #  settings['folders'].each do |folder|
   #    config.vm.synced_folder folder['map'], folder['to'], create: true
   #  end
   #end
 
+  config.vm.network "forwarded_port", guest: 8080, host: 38080
+  config.vm.network "forwarded_port", guest: 5432, host: 35432
+ 
   config.vm.provider 'virtualbox' do |vb|
     # show virtualbox gui when bootstraping vagrant box (useful for debugging)
     # vb.gui = true
