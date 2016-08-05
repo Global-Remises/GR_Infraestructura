@@ -18,7 +18,6 @@ echo "Host github.com" >> ~/.ssh/config
 echo "HostName github.com" >> ~/.ssh/config
 echo "User git" >> ~/.ssh/config
 echo "IdentityFile ~/.ssh/id_rsa_github" >> ~/.ssh/config
-sudo sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
 sudo service ssh restart
 
 chmod 0400 ~/.ssh/id_rsa_github
