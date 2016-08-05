@@ -7,6 +7,7 @@ sudo apt-get update
 sudo apt-get install -y postgresql-9.5 postgresql-contrib-9.5
 
 sudo sh -c "echo 'host    all             all             all                     md5' >> /etc/postgresql/9.5/main/pg_hba.conf"
+sudo sh -c "echo 'host   globalremises   globalremises    127.0.0.1/32            trust' >> /etc/postgresql/9.5/main/pg_hba.conf"
 sudo sed -i "s/[# ]*listen_addresses\([[:space:]]*\)=\([[:space:]]*\).*/listen_addresses = '\*'/g" /etc/postgresql/9.5/main/postgresql.conf
 
 # Create database for vagrant user

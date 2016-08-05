@@ -12,3 +12,8 @@ disable:
 git:
     user.name: 'globalremises'
     user.email: 'globalremises@gmail.com'
+
+sshkey: 
+  - '~/.ssh/id_rsa'
+  - '~/.vagrant.d/insecure_private_key'
+  
