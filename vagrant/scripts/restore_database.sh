@@ -6,4 +6,3 @@ git checkout develop
 git pull origin develop
 cd database
 pg_restore --host localhost --port 5432 --username "globalremises" --dbname "globalremises" --no-password  --verbose "/opt/globalremises/database/database/globalremises.backup"
-
