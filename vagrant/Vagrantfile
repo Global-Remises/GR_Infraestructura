@@ -58,6 +58,7 @@ Vagrant.configure(2) do |config|
     # should be set to 1/4 of host system memory
     vb.memory = settings['memory'] ||= '4096'
     vb.cpus = settings['cpus'] ||= 1
+    vb.name = 'GlobalRemisesDevelop'
   end
 
   Provisioner.run(config, settings)
