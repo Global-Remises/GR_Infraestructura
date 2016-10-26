@@ -1,0 +1,65 @@
+require 'yaml'
+
+# check if vagrant.yml exists
+root_dir = File.dirname(File.expand_path(__FILE__))
+unless File.exist?("#{root_dir}/vagrant.yml")
+  abort('ERROR You must create vagrant.yml file')
+end
+
+# load configuration
+settings = YAML.load_file("#{root_dir}/vagrant.yml")
+
+# check if specified ip address for vm is valid
+if settings['ip']
+  puts 'Entro IP'
+  unless settings['ip'] =~ /\b[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\b/
+    abort('You must specify a valid IP address')
+  end
+end
+
+require "#{root_dir}/scripts/Provisioner.rb"
+Vagrant.configure(2) do |config|
+  config.ssh.insert_key = false
+  config.ssh.private_key_path = ['~/.ssh/id_rsa', '~/.vagrant.d/insecure_private_key']
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/id_rsa_github.pub"
+  config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa_github"
+  config.ssh.forward_agent = true
+  config.vm.box = settings['box']['name']
+  config.vm.box_url = settings['box']['url']
+
+  #Manual IP
+  if settings['ip']
+    config.vm.network 'private_network', ip: settings['ip']
+  end
+
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+  config.vm.synced_folder '.', '/vagrant', disabled: false
+
+  config.vm.hostname = 'globalremises'
+  config.ssh.username = "ubuntu"
+  #if settings.include? 'folders'
+  #  settings['folders'].each do |folder|
+  #    config.vm.synced_folder folder['map'], folder['to'], create: true
+  #  end
+  #end
+
+  config.vm.network "forwarded_port", guest: 8080, host: 38080
+  #Puerto Payara-full
+  config.vm.network "forwarded_port", guest: 8181, host: 38181
+  config.vm.network "forwarded_port", guest: 5432, host: 35432
+  config.vm.network "forwarded_port", guest: 4848, host: 34848
+ 
+  config.vm.provider 'virtualbox' do |vb|
+    # show virtualbox gui when bootstraping vagrant box (useful for debugging)
+    # vb.gui = true
+
+    #vb.name = File.basename(root_dir)
+    # should be set to 1/4 of host system memory
+    vb.memory = settings['memory'] ||= '4096'
+    vb.cpus = settings['cpus'] ||= 1
+    vb.name = 'GlobalRemisesDevelop'
+  end
+
+  Provisioner.run(config, settings)
+end
