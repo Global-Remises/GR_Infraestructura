@@ -1,6 +1,8 @@
 #!/bin/bash
 #name: core_download.sh
 
+pwd=$(pwd)
+
 if [ ! -d '/opt/globalremises/code/grcore' ]; then
 	sudo mkdir -p /opt/globalremises/code/grcore
 	sudo chown ubuntu /opt/globalremises/code/grcore
@@ -13,3 +15,5 @@ if [ "$(ls -A /opt/globalremises/code/grcore)" ]; then
 else
   git clone git@github.com:globalremises/GRCore.git .
 fi
+
+cd $pwd
