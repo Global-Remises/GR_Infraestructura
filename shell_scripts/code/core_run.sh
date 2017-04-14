@@ -13,7 +13,7 @@ if [ ! -x '/opt/globalremises/code/grcore/target/grcore.jar' ]; then
 	bash ./core_create.sh
 fi
 
-cd /opt/globalremises/code/grcore/target/
+cd /opt/globalremises/code/grcore/
 java -jar target/grcore.jar
 
 cd $pwd
